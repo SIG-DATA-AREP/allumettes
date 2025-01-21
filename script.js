@@ -37,12 +37,24 @@ $(document).ready(function () {
   });
 
   $videos.on("timeupdate", function () {
-    const totalDuration = $videos[0]?.duration; // Handle potential undefined video durations
-    if (!isNaN(totalDuration) && totalDuration > 0) {
-      const averageTime =
-        $videos.toArray().reduce((sum, video) => sum + video.currentTime, 0) /
-        $videos.length;
-      $slider.val((averageTime / totalDuration) * 100);
+    if (isPlaying) {
+      const totalDuration = $videos[0]?.duration; // Assume all videos have the same duration
+      if (!isNaN(totalDuration) && totalDuration > 0) {
+        const averageTime =
+          $videos.toArray().reduce((sum, video) => sum + video.currentTime, 0) /
+          $videos.length;
+        const sliderValue = (averageTime / totalDuration) * 100;
+        $slider.val(sliderValue);
+
+        // Update visualization dynamically based on slider value
+        const newData = [
+          Math.round(sliderValue) % 40,
+          (Math.round(sliderValue) + 20) % 50,
+          (Math.round(sliderValue) + 30) % 60,
+          (Math.round(sliderValue) + 40) % 70,
+        ];
+        $visualizationContainer.updateVisualization(newData);
+      }
     }
   });
 
@@ -221,26 +233,21 @@ $(document).ready(function () {
   // Function to update visualization
   $.fn.updateVisualization = function (newData) {
     const bars = this.find(".visual-bar");
-
-    // Calculate total sum of new data
     const total = newData.reduce((acc, val) => acc + val, 0);
 
-    // Animate the bars to the new values
     bars.each(function (index) {
       const newValue = newData[index];
       const newPercentage = (newValue / total) * 100;
 
-      // Update the height with an animation
       $(this)
-        .animate({ height: `${newPercentage}%` }, 1000) // Animate height
-        .attr("data-value", newValue); // Update the stored value
+        .css({ height: `${newPercentage}%` }, 200)
+        .attr("data-value", newValue);
 
-      // Update tooltip content dynamically
       $(this).hover(
         function () {
           const tooltip = $("<div></div>")
             .addClass("bar-tooltip")
-            .text(`${$(this).attr("data-name")}: ${newValue}`) // Tooltip content
+            .text(`${$(this).attr("data-name")}: ${newValue}`)
             .css({
               position: "absolute",
               top: "-30px",
