@@ -81,7 +81,6 @@ $(document).ready(function () {
     labels: Array.from({ length: 101 }, (_, i) => i), // 0 à 100 (timeline)
     data: Array.from({ length: 101 }, () => Math.random() * 100), // Valeurs aléatoires
   };
-  console.log("🚀 ~ jsonData:", jsonData);
 
   // Configuration du graphique
   const ctx = document.getElementById("timelineChart").getContext("2d");
@@ -119,6 +118,61 @@ $(document).ready(function () {
         },
         tooltip: {
           enabled: false, // Disables the hover popup (tooltip)
+        },
+      },
+    },
+  });
+
+  const ctx2 = $("#stackedBarChart")[0].getContext("2d");
+
+  const stackedBarChart = new Chart(ctx2, {
+    type: "bar",
+    data: {
+      labels: ["la part"], // Example labels
+      datasets: [
+        {
+          label: "Solaire",
+          data: [10], // Example data
+          backgroundColor: "#d66b08",
+        },
+        {
+          label: "Nucléraire",
+          data: [15], // Example data
+          backgroundColor: "#d6a508",
+        },
+        {
+          label: "Hydrolique",
+          data: [25], // Example data
+          backgroundColor: "#296bbd",
+        },
+        {
+          label: "Eolien",
+          data: [33], // Example data
+          backgroundColor: "#73ceb5",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false, // Show the legend
+          position: "top", // Position of the legend
+        },
+        tooltip: {
+          enabled: true, // Enable tooltips on hover
+        },
+      },
+      scales: {
+        x: {
+          display: false,
+          stacked: true, // Enable stacked bars for x-axis
+        },
+        y: {
+          display: false,
+          stacked: true, // Enable stacked bars for y-axis
+          beginAtZero: true, // Ensure y-axis starts at zero
+          max: 100, // Max value for percentage
         },
       },
     },
