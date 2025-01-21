@@ -181,7 +181,7 @@ $(document).ready(function () {
       bar.hover(
         function () {
           const tooltip = $("<div></div>")
-            .addClass("tooltip")
+            .addClass("bar-tooltip")
             .text(`${name}: ${value}`) // Tooltip content
             .css({
               position: "absolute",
@@ -198,7 +198,7 @@ $(document).ready(function () {
           $(this).append(tooltip);
         },
         function () {
-          $(this).find(".tooltip").remove();
+          $(this).find(".bar-tooltip").remove();
         }
       );
 
@@ -239,7 +239,7 @@ $(document).ready(function () {
       $(this).hover(
         function () {
           const tooltip = $("<div></div>")
-            .addClass("tooltip")
+            .addClass("bar-tooltip")
             .text(`${$(this).attr("data-name")}: ${newValue}`) // Tooltip content
             .css({
               position: "absolute",
@@ -256,7 +256,7 @@ $(document).ready(function () {
           $(this).append(tooltip);
         },
         function () {
-          $(this).find(".tooltip").remove();
+          $(this).find(".bar-tooltip").remove();
         }
       );
     });
