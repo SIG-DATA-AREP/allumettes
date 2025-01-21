@@ -173,32 +173,32 @@ $(document).ready(function () {
           backgroundColor: color,
           position: "relative",
         })
-        .addClass("visual-bar");
+        .addClass("visual-bar")
+        .attr("data-name", name) // Store category name
+        .attr("data-value", value); // Store category value
 
       // Add hover tooltip
       bar.hover(
         function () {
-          // Create the tooltip on hover
           const tooltip = $("<div></div>")
-            .addClass("bar-tooltip")
-            .text(`${name}: ${value}`) // Set content
+            .addClass("tooltip")
+            .text(`${name}: ${value}`) // Tooltip content
             .css({
               position: "absolute",
-              top: "-30px", // Position above the bar
-              left: "50%", // Center it horizontally
+              top: "-30px",
+              left: "50%",
               transform: "translateX(-50%)",
               backgroundColor: "rgba(0, 0, 0, 0.8)",
               color: "#fff",
               padding: "5px 10px",
               borderRadius: "4px",
               whiteSpace: "nowrap",
-              zIndex: "10",
+              zIndex: 10,
             });
           $(this).append(tooltip);
         },
         function () {
-          // Remove the tooltip on mouse leave
-          $(this).find(".bar-tooltip").remove();
+          $(this).find(".tooltip").remove();
         }
       );
 
@@ -218,15 +218,67 @@ $(document).ready(function () {
     return this; // Allow chaining
   };
 
+  // Function to update visualization
+  $.fn.updateVisualization = function (newData) {
+    const bars = this.find(".visual-bar");
+
+    // Calculate total sum of new data
+    const total = newData.reduce((acc, val) => acc + val, 0);
+
+    // Animate the bars to the new values
+    bars.each(function (index) {
+      const newValue = newData[index];
+      const newPercentage = (newValue / total) * 100;
+
+      // Update the height with an animation
+      $(this)
+        .animate({ height: `${newPercentage}%` }, 1000) // Animate height
+        .attr("data-value", newValue); // Update the stored value
+
+      // Update tooltip content dynamically
+      $(this).hover(
+        function () {
+          const tooltip = $("<div></div>")
+            .addClass("tooltip")
+            .text(`${$(this).attr("data-name")}: ${newValue}`) // Tooltip content
+            .css({
+              position: "absolute",
+              top: "-30px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              color: "#fff",
+              padding: "5px 10px",
+              borderRadius: "4px",
+              whiteSpace: "nowrap",
+              zIndex: 10,
+            });
+          $(this).append(tooltip);
+        },
+        function () {
+          $(this).find(".tooltip").remove();
+        }
+      );
+    });
+  };
+
   // Example usage
-  const data = [40, 30, 20, 10]; // Example data
+  const data = [40, 30, 20, 10]; // Initial data
   const categories = [
-    { name: "Category 1", color: "#74c7b8" },
-    { name: "Category 2", color: "#3066be" },
-    { name: "Category 3", color: "#d8a025" },
-    { name: "Category 4", color: "#d1632c" },
+    { name: "Solaire", color: "#d66b08" },
+    { name: "Nucléaire", color: "#d6a508" },
+    { name: "Hydrolique", color: "#296bbd" },
+    { name: "Eolien", color: "#73ceb5" },
   ];
 
-  // Call the function on a container
-  $("#visualizationContainer").generateVisualization(data, categories);
+  const $visualizationContainer = $("#visualizationContainer");
+
+  // Generate the initial visualization
+  $visualizationContainer.generateVisualization(data, categories);
+
+  // Example: Update the visualization after 3 seconds
+  setTimeout(() => {
+    const newData = [20, 40, 10, 30]; // New data
+    $visualizationContainer.updateVisualization(newData);
+  }, 3000);
 });
