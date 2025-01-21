@@ -123,61 +123,6 @@ $(document).ready(function () {
     },
   });
 
-  const ctx2 = $("#stackedBarChart")[0].getContext("2d");
-
-  const stackedBarChart = new Chart(ctx2, {
-    type: "bar",
-    data: {
-      labels: ["la part"], // Example labels
-      datasets: [
-        {
-          label: "Solaire",
-          data: [10], // Example data
-          backgroundColor: "#d66b08",
-        },
-        {
-          label: "Nucléraire",
-          data: [15], // Example data
-          backgroundColor: "#d6a508",
-        },
-        {
-          label: "Hydrolique",
-          data: [25], // Example data
-          backgroundColor: "#296bbd",
-        },
-        {
-          label: "Eolien",
-          data: [33], // Example data
-          backgroundColor: "#73ceb5",
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false, // Show the legend
-          position: "top", // Position of the legend
-        },
-        tooltip: {
-          enabled: true, // Enable tooltips on hover
-        },
-      },
-      scales: {
-        x: {
-          display: false,
-          stacked: true, // Enable stacked bars for x-axis
-        },
-        y: {
-          display: false,
-          stacked: true, // Enable stacked bars for y-axis
-          beginAtZero: true, // Ensure y-axis starts at zero
-          max: 100, // Max value for percentage
-        },
-      },
-    },
-  });
-
   // Synchrnizing
   $slider.on("input", function () {
     const sliderValue = $(this).val();
@@ -204,4 +149,84 @@ $(document).ready(function () {
   $slider.on("mouseup touchend", function () {
     $tooltip.css("display", "none");
   });
+
+  // jQuery function to generate the visualization
+  $.fn.generateVisualization = function (data, categories) {
+    // Clear the container
+    this.empty();
+
+    // Calculate total sum of data
+    const total = data.reduce((acc, val) => acc + val, 0);
+
+    // Generate bars for each category
+    data.forEach((value, index) => {
+      const percentage = (value / total) * 100; // Calculate percentage
+      const category = categories[index];
+      const color = category.color || "grey"; // Default color if not provided
+      const name = category.name || `Category ${index + 1}`;
+
+      // Create and style the bar
+      const bar = $("<div></div>")
+        .css({
+          height: `${percentage}%`,
+          width: "100%",
+          backgroundColor: color,
+          position: "relative",
+        })
+        .addClass("visual-bar");
+
+      // Add hover tooltip
+      bar.hover(
+        function () {
+          // Create the tooltip on hover
+          const tooltip = $("<div></div>")
+            .addClass("bar-tooltip")
+            .text(`${name}: ${value}`) // Set content
+            .css({
+              position: "absolute",
+              top: "-30px", // Position above the bar
+              left: "50%", // Center it horizontally
+              transform: "translateX(-50%)",
+              backgroundColor: "rgba(0, 0, 0, 0.8)",
+              color: "#fff",
+              padding: "5px 10px",
+              borderRadius: "4px",
+              whiteSpace: "nowrap",
+              zIndex: "10",
+            });
+          $(this).append(tooltip);
+        },
+        function () {
+          // Remove the tooltip on mouse leave
+          $(this).find(".bar-tooltip").remove();
+        }
+      );
+
+      // Append the bar to the container
+      this.append(bar);
+    });
+
+    // Ensure the container fills its parent
+    this.css({
+      display: "flex",
+      flexDirection: "column-reverse",
+      width: "100%",
+      height: "100%",
+      position: "relative",
+    });
+
+    return this; // Allow chaining
+  };
+
+  // Example usage
+  const data = [40, 30, 20, 10]; // Example data
+  const categories = [
+    { name: "Category 1", color: "#74c7b8" },
+    { name: "Category 2", color: "#3066be" },
+    { name: "Category 3", color: "#d8a025" },
+    { name: "Category 4", color: "#d1632c" },
+  ];
+
+  // Call the function on a container
+  $("#visualizationContainer").generateVisualization(data, categories);
 });
