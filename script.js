@@ -235,6 +235,12 @@ $(document).ready(function () {
     const bars = this.find(".visual-bar");
     const total = newData.reduce((acc, val) => acc + val, 0);
 
+    // Update the inner content of each span element
+    $("#stat_cat_1").html(newData[0]);
+    $("#stat_cat_2").html(newData[1]);
+    $("#stat_cat_3").html(newData[2]);
+    $("#stat_cat_4").html(newData[3]);
+
     bars.each(function (index) {
       const newValue = newData[index];
       const newPercentage = (newValue / total) * 100;
@@ -277,6 +283,12 @@ $(document).ready(function () {
     { name: "Hydrolique", color: "#296bbd" },
     { name: "Eolien", color: "#73ceb5" },
   ];
+
+  // Update the inner content of each span element
+  $("#stat_cat_1").html(data[0]);
+  $("#stat_cat_2").html(data[1]);
+  $("#stat_cat_3").html(data[2]);
+  $("#stat_cat_4").html(data[3]);
 
   const $visualizationContainer = $("#visualizationContainer");
 
