@@ -276,9 +276,19 @@ $(document).ready(function () {
   // Generate the initial visualization
   $visualizationContainer.generateVisualization(data, categories);
 
-  // Example: Update the visualization after 3 seconds
-  setTimeout(() => {
-    const newData = [20, 40, 10, 30]; // New data
+  // Sync with the input range slider during video playback
+  $slider.on("input", function () {
+    // Simulated new data based on slider value
+    const sliderValue = $(this).val();
+    const newData = [
+      parseInt(sliderValue) % 40,
+      (parseInt(sliderValue) + 20) % 50,
+      (parseInt(sliderValue) + 30) % 60,
+      (parseInt(sliderValue) + 40) % 70,
+    ];
+    console.log("🚀 ~ newData:", newData);
+
+    // Update the visualization dynamically
     $visualizationContainer.updateVisualization(newData);
-  }, 3000);
+  });
 });
