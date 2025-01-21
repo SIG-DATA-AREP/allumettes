@@ -293,7 +293,6 @@ $(document).ready(function () {
       (parseInt(sliderValue) + 30) % 60,
       (parseInt(sliderValue) + 40) % 70,
     ];
-    console.log("🚀 ~ newData:", newData);
 
     // Update the visualization dynamically
     $visualizationContainer.updateVisualization(newData);
