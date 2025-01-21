@@ -1,0 +1,75 @@
+.video-container {
+    position: relative;
+
+    video {
+        display: block;
+        width: 100%;
+    }
+
+    .video-icon {
+        bottom: 10px;
+        right: 10px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: white;
+        z-index: 10;
+        /* display: none; */
+        transition: all 0.3s ease;
+
+        &:hover {
+            color: #ddd;
+        }
+    }
+
+    &:hover {
+        .video-icon {
+            display: block;
+        }
+    }
+}
+.chart-slider-container {
+    position: relative;
+    width: 100%;
+    height: 40px; // Adjust height as needed
+
+    canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute; // Stack the chart
+        top: 0;
+        left: 0;
+        z-index: 1; // Lower layer
+    }
+
+    .slider-tooltip-container {
+        position: absolute; // Stack the slider
+        top: 0; // Align with the chart
+        left: 0;
+        width: 100%;
+        z-index: 2; // Upper layer
+        margin: 0; // No margin between chart and slider
+
+        input[type="range"] {
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        #sliderTooltip {
+            position: absolute;
+            top: -30px; // Position above the slider
+            left: 0;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            display: none;
+            pointer-events: none;
+            z-index: 3; // Above all
+        }
+    }
+}
