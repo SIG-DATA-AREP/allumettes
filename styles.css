@@ -22,6 +22,16 @@
   display: block;
 }
 
+.video-desc {
+  position: relative;
+}
+.video-desc .video-stats {
+  bottom: 10px;
+  right: 10px;
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
 .chart-slider-container {
   position: relative;
   width: 100%;
