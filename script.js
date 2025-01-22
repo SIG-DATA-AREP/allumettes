@@ -285,10 +285,10 @@ $(document).ready(function () {
   ];
 
   // Update the inner content of each span element
-  $("#stat_cat_1").html(data[0]);
-  $("#stat_cat_2").html(data[1]);
-  $("#stat_cat_3").html(data[2]);
-  $("#stat_cat_4").html(data[3]);
+  $("#stat_cat_1").html(data[0]).css({ color: "#d66b08" });
+  $("#stat_cat_2").html(data[1]).css({ color: "#d6a508d" });
+  $("#stat_cat_3").html(data[2]).css({ color: "#296bbd" });
+  $("#stat_cat_4").html(data[3]).css({ color: "#73ceb5" });
 
   const $visualizationContainer = $("#visualizationContainer");
 
