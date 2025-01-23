@@ -344,6 +344,7 @@ $.when.apply($, promises).done(function(...responses) {
     });
 
     console.log("Combined Data:", combinedData);
+    console.log("Combined Data:", combinedData[0].production.length);
     console.log("🚀 ~ $ ~ data:", combinedData[0].production[0], convertTimestampToDate(combinedData[0].time[0]))
 
 
