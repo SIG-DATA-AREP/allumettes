@@ -16,7 +16,18 @@
         cursor: pointer;
         color: white;
         z-index: 10;
-        /* display: none; */
+        &.icon_cat_1{
+            color: #d66b08;
+        }
+        &.icon_cat_2{
+            color: #e6ad10;
+        }
+        &.icon_cat_3{
+            color: #296bbd;
+        }
+        &.icon_cat_4{
+            color: #73ceb5;
+        }
         transition: all 0.3s ease;
 
         &:hover {
@@ -45,13 +56,18 @@
     width: 100%;
     height: 40px; // Adjust height as needed
 
+    #playPauseButton{
+        width: 30px;
+        color: #0d6efd;
+    }
+
     canvas {
         display: block;
-        width: 100%;
+        width: calc(100% - 22px)!important;
         height: 100%;
         position: absolute; // Stack the chart
         top: 0;
-        left: 0;
+        left: 26px;
         z-index: 1; // Lower layer
     }
 
