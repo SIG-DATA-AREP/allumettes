@@ -326,19 +326,29 @@ $(document).ready(function () {
     return formattedDate;
 }
 
-  $(document).ready(function() {
-    $.ajax({
-        url: 'data/solar.json',
-        dataType: 'json',
-        success: function(data) {
-          // Traiter les données ici
-          console.log("🚀 ~ $ ~ data:", data)
-          console.log("🚀 ~ $ ~ data:", data.production[0], convertTimestampToDate(data.time[0]))
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log('Erreur lors du chargement du fichier JSON : ' + textStatus+ ", " + errorThrown);
-        }
+let jsonFiles = ['data/solar.json', 'data/nuclear.json', 'data/hydro.json', 'data/eol.json'];
+let combinedData = [];
+
+let loadJSON = function(url) {
+    return $.ajax({
+        url: url,
+        dataType: 'json'
     });
+};
+
+let promises = jsonFiles.map(file => loadJSON(file));
+
+$.when.apply($, promises).done(function(...responses) {
+    responses.forEach(response => {
+        combinedData = combinedData.concat(response[0]);
+    });
+
+    console.log("Combined Data:", combinedData);
+    console.log("🚀 ~ $ ~ data:", combinedData[0].production[0], convertTimestampToDate(combinedData[0].time[0]))
+
+
+}).fail(function(jqXHR, textStatus, errorThrown) {
+    console.log('Erreur lors du chargement d\'un fichier JSON : ' + textStatus);
 });
 
 });
