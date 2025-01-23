@@ -309,4 +309,36 @@ $(document).ready(function () {
     // Update the visualization dynamically
     $visualizationContainer.updateVisualization(newData);
   });
+
+  function convertTimestampToDate(timestamp) {
+    let date = new Date(timestamp * 1000); // Convertir le timestamp en millisecondes
+
+    // Formater la date
+    let formattedDate = date.toLocaleString('fr-FR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+
+    return formattedDate;
+}
+
+  $(document).ready(function() {
+    $.ajax({
+        url: 'data/solar.json',
+        dataType: 'json',
+        success: function(data) {
+          // Traiter les données ici
+          console.log("🚀 ~ $ ~ data:", data)
+          console.log("🚀 ~ $ ~ data:", data.production[0], convertTimestampToDate(data.time[0]))
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log('Erreur lors du chargement du fichier JSON : ' + textStatus+ ", " + errorThrown);
+        }
+    });
+});
+
 });
